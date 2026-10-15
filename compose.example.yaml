@@ -1,0 +1,15 @@
+# Example Docker Compose service. Copy to compose.yaml and adjust.
+# Put your config.yaml in ./config (start from config.example.yaml).
+services:
+  heliotherm2mqtt:
+    image: ghcr.io/deggle/heliotherm2mqtt:latest
+    container_name: heliotherm2mqtt
+    restart: unless-stopped
+    volumes:
+      - ./config:/config:ro
+    environment:
+      # Any H2M_* variable overrides config.yaml; see README.
+      H2M_MQTT_PASSWORD: ${H2M_MQTT_PASSWORD:-}
+      # H2M_MQTT_RETAIN: "false"     # nothing retained, handy while testing discovery
+      # H2M_HA_DISCOVERY: "true"
+      # H2M_LOG_LEVEL: DEBUG

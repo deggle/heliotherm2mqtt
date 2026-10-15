@@ -1,0 +1,26 @@
+# Local configuration with real addresses or secrets
+local/
+config.yaml
+config.local.*
+.env
+*.secret
+
+# Manufacturer documents and site-specific reference material (not redistributable)
+docs/reference/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Editors and OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

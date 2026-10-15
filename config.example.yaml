@@ -1,0 +1,54 @@
+# heliotherm2mqtt example configuration.
+# Copy to config.yaml and edit. Every setting under mqtt, homeassistant and writes
+# can also be set with an H2M_* environment variable (see README).
+
+mqtt:
+  host: mqtt.example.local
+  port: 1883
+  # username: heliotherm2mqtt
+  # password: set H2M_MQTT_PASSWORD instead of putting it here
+  client_id: heliotherm2mqtt
+  topic_prefix: heliotherm
+  # Set to false while testing so nothing is left retained on the broker.
+  retain: true
+
+homeassistant:
+  discovery: false
+  discovery_prefix: homeassistant
+  # Heat pump devices are shown in HA as connected via this bridge device.
+  bridge_name: Heliotherm2MQTT Bridge
+
+writes:
+  # Commands are rejected unless this is true. Only points marked writable are accepted.
+  enabled: false
+  # Minimum seconds between writes to one heat pump (5 is the minimum allowed).
+  min_interval: 5
+
+log_level: INFO
+# Seconds between full republishes of every value (changes are published at once).
+republish_interval: 300
+
+heatpumps:
+  - id: primary             # used in topics: heliotherm/primary/...
+    name: Primary heat pump # Home Assistant device name
+    host: 192.0.2.10
+    port: 502
+    unit_id: 1
+    # model: Heliotherm HP08L-M-BC
+    poll_interval: 10       # seconds
+    timeout: 10             # seconds; the manufacturer recommends at least 10
+    offline_after: 60       # seconds of failed polls before reporting offline
+
+  - id: secondary
+    name: Secondary heat pump
+    host: 192.0.2.11
+
+  - id: pool
+    name: Pool heat pump
+    host: 192.0.2.12
+    # Hide points this unit does not use (glob patterns over point keys).
+    # Without a room sensor, exclude room_temperature to remove the Heating climate.
+    exclude_points:
+      - "mc1_*"
+      - "mc2_*"
+      - "room_temperature"
